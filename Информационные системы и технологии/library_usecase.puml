@@ -1,0 +1,62 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Читатель" as Reader
+actor "Библиотекарь" as Librarian
+actor "Администратор" as Admin
+
+' --- Генерализация актёров ---
+Admin --|> Librarian
+
+usecase "Найти книгу" as UC1
+usecase "Оформить абонемент" as UC2
+usecase "Продлить срок абонемента" as UC3
+usecase "Забронировать книгу" as UC4
+usecase "Оставить отзыв о книге" as UC5
+usecase "Зарегистрироваться в системе" as UC6
+
+usecase "Проверить наличие книги" as UC7
+usecase "Проверить читательский билет" as UC8
+usecase "Оплатить штраф" as UC9
+usecase "Получить уведомление о поступлении" as UC10
+
+usecase "Оформить бумажный абонемент" as UC2a
+usecase "Оформить электронный абонемент" as UC2b
+
+usecase "Зарегистрировать читателя" as UC11
+usecase "Добавить книгу в каталог" as UC12
+usecase "Списать книгу" as UC13
+
+usecase "Составить отчёт по выдачам" as UC14
+usecase "Управлять учётными записями" as UC15
+
+' --- Ассоциации актёр - вариант использования ---
+Reader -- UC1
+Reader -- UC2
+Reader -- UC3
+Reader -- UC4
+Reader -- UC5
+Reader -- UC6
+
+Librarian -- UC2
+Librarian -- UC11
+Librarian -- UC12
+Librarian -- UC13
+
+Admin -- UC14
+Admin -- UC15
+
+' --- Include: обязательное подключение ---
+UC2 ..> UC7 : <<include>>
+UC2 ..> UC8 : <<include>>
+
+' --- Extend: опциональное расширение поведения ---
+UC9 ..> UC3 : <<extend>>
+UC10 ..> UC4 : <<extend>>
+
+' --- Генерализация вариантов использования ---
+UC2 <|-- UC2a
+UC2 <|-- UC2b
+
+@enduml
