@@ -1,0 +1,79 @@
+@startuml
+
+left to right direction
+
+' --- АКТЁРЫ ---
+actor "Пациент" as Patient
+actor "Регестратура" as Registrar
+actor "Врач" as Doctor
+actor "Главный врач" as HeadDoctor
+
+' Обобщение (Наследование)
+HeadDoctor --|> Doctor
+
+' --- ВАРИАНТЫ ИСПОЛЬЗОВАНИЯ ---
+
+' Пациентские
+usecase "Авторизоваться в личном кабинете" as UC_Auth
+usecase "Искать услугу" as UC_Search
+usecase "Записаться на приём" as UC_BookOnline
+usecase "Выбрать время в расписании" as UC_SelectTime
+usecase "Отменить/Перенести запись" as UC_Cancel
+usecase "Запросить медкарту" as UC_ViewCard
+
+' Регистратура и Касса (Регестратура)
+usecase "Зарегистрировать нового пациента" as UC_RegPatient
+usecase "Записать пациента через регистратуру" as UC_BookDesk
+usecase "Принять оплату за услуги" as UC_Payment
+usecase "Выдать чек" as UC_TaxDoc
+
+' Лечебный процесс (Врач)
+usecase "Провести медицинский приём" as UC_Consult
+usecase "Заполнить медкарту" as UC_FillCard
+usecase "Выписать рецепт" as UC_Prescription
+usecase "Направить на анализы" as UC_Referral
+usecase "Оформить больничный" as UC_SickLeave
+usecase "Направить на госпитализацию" as UC_Hospitalize
+
+' Управление и контроль (Главный врач)
+usecase "Утвердить расписание врачей" as UC_Schedule
+usecase "Утвердить закупку медикаментов" as UC_Procurement
+usecase "Провести аудит медкарт" as UC_Audit
+usecase "Сформировать отчёт работы клиники" as UC_Report
+usecase "Отправить отчёт в Минздрав" as UC_ExportReport
+
+' --- СВЯЗИ ПАЦИЕНТА ---
+Patient -- UC_Search
+Patient -- UC_Cancel
+Patient -- UC_ViewCard
+Patient -- UC_BookOnline
+
+' --- СВЯЗИ РЕГИСТРАТОРА ---
+Registrar -- UC_BookDesk
+Registrar -- UC_Auth
+Registrar -- UC_RegPatient
+Registrar -- UC_Payment
+
+' --- СВЯЗИ ВРАЧА ---
+Doctor -- UC_Consult
+Doctor -- UC_Prescription
+
+' --- СВЯЗИ ГЛАВНОГО ВРАЧА ---
+HeadDoctor -- UC_Schedule
+HeadDoctor -- UC_Procurement
+HeadDoctor -- UC_Audit
+HeadDoctor -- UC_Report
+
+' --- СВЯЗИ INCLUDE ---
+UC_BookOnline ..> UC_SelectTime : <<include>>
+UC_BookDesk ..> UC_SelectTime : <<include>>
+UC_Consult ..> UC_FillCard : <<include>>
+
+' --- СВЯЗИ EXTEND ---
+UC_Payment <.. UC_TaxDoc : <<extend>>
+UC_Consult <.. UC_Referral : <<extend>>
+UC_Consult <.. UC_SickLeave : <<extend>>
+UC_Consult <.. UC_Hospitalize : <<extend>>
+UC_Report <.. UC_ExportReport : <<extend>>
+
+@enduml

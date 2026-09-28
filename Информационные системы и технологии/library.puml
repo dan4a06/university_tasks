@@ -1,0 +1,81 @@
+@startuml
+' Настройки стиля для аккуратного вида
+
+left to right direction
+
+' --- АКТЁРЫ ---
+actor "Читатель" as Reader
+actor "Поставщик книг" as Supplier
+actor "Библиотекарь" as Librarian
+actor "Администратор" as Admin
+
+' Обобщение (Наследование)
+Admin --|> Librarian
+
+' Блок 1: Авторизация и поиск
+  usecase "Авторизоваться в системе" as UC_Auth
+  usecase "Искать книгу в каталоге" as UC_Search
+  usecase "Проверить наличие книги" as UC_CheckDB
+  usecase "Просмотреть историю чтения" as UC_History
+  usecase "Оставить отзыв на книгу" as UC_Review
+
+
+' Блок 2: Обслуживание читателей
+  usecase "Забронировать книгу онлайн" as UC_Book
+  usecase "Продлить срок аренды книги" as UC_Renew
+  usecase "Выдать книгу читателю" as UC_Issue
+  usecase "Проверить читательский билет" as UC_CheckCard
+  usecase "Принять возвращённую книгу" as UC_Return
+  usecase "Начислить штраф за просрочку" as UC_Fine
+  usecase "Оформить читательский билет" as UC_NewCard
+  usecase "Списать повреждённую книгу" as UC_Discard
+  usecase "Внести новые книги в каталог" as UC_AddBooks
+
+
+' Блок 3: Поставка и закупка
+  usecase "Подтвердить поставку книг" as UC_ConfirmSupply
+
+
+' Блок 4: Администрирование
+  usecase "Управлять аккаунтами библиотекарей" as UC_ManageUsers
+  usecase "Настроить права доступа" as UC_SetPermissions
+  usecase "Сформировать аналитический отчёт" as UC_Report
+  usecase "Отправить заявку на поставку" as UC_SendOrder
+  usecase "Сформировать заявку на закупку" as UC_Order
+
+
+' --- СВЯЗИ ЧИТАТЕЛЯ ---
+Reader -- UC_Search
+Reader -- UC_History
+Reader -- UC_Review
+Reader -- UC_Book
+Reader -- UC_Renew
+
+' --- СВЯЗИ БИБЛИОТЕКАРЯ ---
+Librarian -- UC_Auth
+Librarian -- UC_Issue
+Librarian -- UC_Return
+Librarian -- UC_NewCard
+Librarian -- UC_Discard
+' Librarian -- UC_AddBooks
+
+' --- СВЯЗИ ПОСТАВЩИКА ---
+Supplier -- UC_ConfirmSupply
+
+' --- СВЯЗИ АДМИНИСТРАТОРА (Уникальные) ---
+Admin -- UC_ManageUsers
+Admin -- UC_SetPermissions
+Admin -- UC_Report
+Admin -- UC_SendOrder
+
+' --- СВЯЗИ INCLUDE (Обязательные шаги) ---
+UC_Search ..> UC_CheckDB : <<include>>
+UC_Book ..> UC_Auth : <<include>>
+UC_Issue ..> UC_CheckCard : <<include>>
+UC_SendOrder <.. UC_Order : <<include>>
+
+' --- СВЯЗИ EXTEND (Условия и расширения) ---
+UC_Return <.. UC_Fine : <<extend>>
+UC_ConfirmSupply <.. UC_AddBooks : <<extend>>
+
+@enduml
