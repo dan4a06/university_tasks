@@ -1,0 +1,24 @@
+@startuml atm
+autoactivate on
+
+actor "Пользователь" as user
+participant "банкомат" as atm
+
+activate user
+user -> atm: Приложить карту
+
+user <-- atm: Запросить пин-код
+
+user -> atm: Ввести пин-код
+
+autoactivate off
+atm -> atm: Проверить пин-код
+autoactivate on
+
+user <-- atm: Показать варианты услуг
+
+user -> atm: Запросить просмотр баланса
+
+user <-- atm: Показать баланс
+
+@enduml3
