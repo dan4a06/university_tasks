@@ -18,6 +18,8 @@ Admin --|> Librarian
   usecase "Проверить наличие книги" as UC_CheckDB
   usecase "Просмотреть историю чтения" as UC_History
   usecase "Оставить отзыв на книгу" as UC_Review
+  usecase "Оплатить задолженность" as UC_Pay
+  usecase "Сохранить книгу в 'Избранное'" as UC_AddFavorites
 
 
 ' Блок 2: Обслуживание читателей
@@ -30,10 +32,12 @@ Admin --|> Librarian
   usecase "Оформить читательский билет" as UC_NewCard
   usecase "Списать повреждённую книгу" as UC_Discard
   usecase "Внести новые книги в каталог" as UC_AddBooks
+  usecase "Отправить напоминание должникам" as UC_SendReminders
 
 
 ' Блок 3: Поставка и закупка
-  usecase "Подтвердить поставку книг" as UC_ConfirmSupply
+  usecase "Поставить книги" as UC_ConfirmSupply
+  usecase "Передать накладную" as UC_SendInvoice
 
 
 ' Блок 4: Администрирование
@@ -42,6 +46,7 @@ Admin --|> Librarian
   usecase "Сформировать аналитический отчёт" as UC_Report
   usecase "Отправить заявку на поставку" as UC_SendOrder
   usecase "Сформировать заявку на закупку" as UC_Order
+  usecase "Принять постаку книг" as UC_Postavka
 
 
 ' --- СВЯЗИ ЧИТАТЕЛЯ ---
@@ -50,23 +55,27 @@ Reader -- UC_History
 Reader -- UC_Review
 Reader -- UC_Book
 Reader -- UC_Renew
+Reader -- UC_Pay
+Reader -- UC_AddFavorites
 
 ' --- СВЯЗИ БИБЛИОТЕКАРЯ ---
-Librarian -- UC_Auth
 Librarian -- UC_Issue
 Librarian -- UC_Return
 Librarian -- UC_NewCard
 Librarian -- UC_Discard
-' Librarian -- UC_AddBooks
+Librarian -- UC_SendReminders
+Librarian -- UC_AddBooks
 
 ' --- СВЯЗИ ПОСТАВЩИКА ---
 Supplier -- UC_ConfirmSupply
+Supplier -- UC_SendInvoice
 
 ' --- СВЯЗИ АДМИНИСТРАТОРА (Уникальные) ---
 Admin -- UC_ManageUsers
 Admin -- UC_SetPermissions
 Admin -- UC_Report
 Admin -- UC_SendOrder
+Admin -- UC_Postavka
 
 ' --- СВЯЗИ INCLUDE (Обязательные шаги) ---
 UC_Search ..> UC_CheckDB : <<include>>
@@ -76,6 +85,5 @@ UC_SendOrder <.. UC_Order : <<include>>
 
 ' --- СВЯЗИ EXTEND (Условия и расширения) ---
 UC_Return <.. UC_Fine : <<extend>>
-UC_ConfirmSupply <.. UC_AddBooks : <<extend>>
 
 @enduml

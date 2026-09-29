@@ -4,7 +4,7 @@ left to right direction
 
 ' --- АКТЁРЫ ---
 actor "Пациент" as Patient
-actor "Регестратура" as Registrar
+actor "Регистратура" as Registrar
 actor "Врач" as Doctor
 actor "Главный врач" as HeadDoctor
 
@@ -20,8 +20,11 @@ usecase "Записаться на приём" as UC_BookOnline
 usecase "Выбрать время в расписании" as UC_SelectTime
 usecase "Отменить/Перенести запись" as UC_Cancel
 usecase "Запросить медкарту" as UC_ViewCard
+usecase "Оставить отзыв о враче" as UC_Review
+usecase "Оплатить услугу онлайн" as UC_PayOnline
+usecase "Сдать анализы" as UC_Analiz
 
-' Регистратура и Касса (Регестратура)
+' Регистратура и Касса
 usecase "Зарегистрировать нового пациента" as UC_RegPatient
 usecase "Записать пациента через регистратуру" as UC_BookDesk
 usecase "Принять оплату за услуги" as UC_Payment
@@ -34,6 +37,7 @@ usecase "Выписать рецепт" as UC_Prescription
 usecase "Направить на анализы" as UC_Referral
 usecase "Оформить больничный" as UC_SickLeave
 usecase "Направить на госпитализацию" as UC_Hospitalize
+usecase "Просмотреть результаты анализов" as UC_ViewLabResults
 
 ' Управление и контроль (Главный врач)
 usecase "Утвердить расписание врачей" as UC_Schedule
@@ -41,14 +45,18 @@ usecase "Утвердить закупку медикаментов" as UC_Procu
 usecase "Провести аудит медкарт" as UC_Audit
 usecase "Сформировать отчёт работы клиники" as UC_Report
 usecase "Отправить отчёт в Минздрав" as UC_ExportReport
+usecase "Рассмотреть жалобу пациента" as UC_ReviewComplaint
 
 ' --- СВЯЗИ ПАЦИЕНТА ---
 Patient -- UC_Search
 Patient -- UC_Cancel
 Patient -- UC_ViewCard
 Patient -- UC_BookOnline
+Patient -- UC_Review
+Patient -- UC_PayOnline
+Patient -- UC_Analiz
 
-' --- СВЯЗИ РЕГИСТРАТОРА ---
+' --- СВЯЗИ РЕГИСТРАТУРЫ ---
 Registrar -- UC_BookDesk
 Registrar -- UC_Auth
 Registrar -- UC_RegPatient
@@ -57,12 +65,14 @@ Registrar -- UC_Payment
 ' --- СВЯЗИ ВРАЧА ---
 Doctor -- UC_Consult
 Doctor -- UC_Prescription
+Doctor -- UC_ViewLabResults
 
 ' --- СВЯЗИ ГЛАВНОГО ВРАЧА ---
 HeadDoctor -- UC_Schedule
 HeadDoctor -- UC_Procurement
 HeadDoctor -- UC_Audit
 HeadDoctor -- UC_Report
+HeadDoctor -- UC_ReviewComplaint
 
 ' --- СВЯЗИ INCLUDE ---
 UC_BookOnline ..> UC_SelectTime : <<include>>
