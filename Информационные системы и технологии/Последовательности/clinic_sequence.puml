@@ -1,0 +1,372 @@
+@startuml UC_Auth
+autoactivate on
+actor "Регистратура" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Ввести логин и пароль
+s -> db: Проверить учётные данные
+s <-- db: Результат
+autoactivate off
+alt успешно
+  a <-- s: Открыть личный кабинет
+else ошибка
+  a <-- s: Показать сообщение об ошибке
+end
+deactivate s
+@enduml
+
+@startuml UC_Search
+autoactivate on
+actor "Пациент" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Ввести запрос
+s -> db: Найти услуги
+s <-- db: Список услуг
+a <-- s: Показать результаты
+@enduml
+
+@startuml UC_BookOnline
+autoactivate on
+actor "Пациент" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Выбрать услугу и врача
+a <-- s: Предложить выбрать время (include)
+a -> s: Подтвердить запись
+s -> db: Сохранить запись
+s <-- db: ОК
+a <-- s: Показать подтверждение
+@enduml
+
+@startuml UC_SelectTime
+autoactivate on
+actor "Пациент" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Запросить расписание врача
+s -> db: Получить свободные слоты
+s <-- db: Слоты
+a <-- s: Показать свободное время
+a -> s: Выбрать слот
+s -> db: Зарезервировать слот
+s <-- db: ОК
+a <-- s: Слот выбран
+@enduml
+
+@startuml UC_Cancel
+autoactivate on
+actor "Пациент" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Открыть мои записи
+s -> db: Получить записи
+s <-- db: Список записей
+a <-- s: Показать записи
+a -> s: Отменить или перенести запись
+s -> db: Обновить запись
+s <-- db: ОК
+a <-- s: Показать подтверждение
+@enduml
+
+@startuml UC_ViewCard
+autoactivate on
+actor "Пациент" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Запросить медкарту
+s -> db: Получить медкарту
+s <-- db: Данные медкарты
+a <-- s: Показать медкарту
+@enduml
+
+@startuml UC_Review
+autoactivate on
+actor "Пациент" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Ввести оценку и текст отзыва
+s -> db: Сохранить отзыв
+s <-- db: ОК
+a <-- s: Отзыв опубликован
+@enduml
+
+@startuml UC_PayOnline
+autoactivate on
+actor "Пациент" as a
+participant "Система" as s
+participant "Платёжный шлюз" as pg
+activate a
+a -> s: Выбрать услугу к оплате
+a <-- s: Показать сумму
+a -> s: Ввести данные карты
+s -> pg: Запросить платёж
+s <-- pg: Результат платежа
+a <-- s: Показать результат оплаты
+@enduml
+
+@startuml UC_Analiz
+autoactivate on
+actor "Пациент" as a
+participant "Система" as s
+participant "Лаборатория" as lab
+activate a
+a -> s: Предъявить направление
+s -> lab: Передать направление
+s <-- lab: Принято
+a <-- s: Направить в лабораторию
+a -> lab: Сдать биоматериал
+a <-- lab: Результат будет готов позже
+@enduml
+
+@startuml UC_RegPatient
+autoactivate on
+actor "Регистратура" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Ввести данные пациента
+s -> db: Проверить дубликат
+s <-- db: Не найден
+s -> db: Создать карточку пациента
+s <-- db: ОК
+a <-- s: Пациент зарегистрирован
+@enduml
+
+@startuml UC_BookDesk
+autoactivate on
+actor "Регистратура" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Найти пациента
+s -> db: Запросить карточку
+s <-- db: Карточка
+a <-- s: Показать карточку пациента
+a -> s: Выбрать врача и время
+s -> db: Сохранить запись
+s <-- db: ОК
+a <-- s: Запись оформлена
+@enduml
+
+@startuml UC_Payment
+autoactivate on
+actor "Регистратура" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Принять оплату за услугу
+s -> db: Зафиксировать платёж
+s <-- db: ОК
+a <-- s: Оплата принята
+opt нужен чек (extend)
+  a -> s: Запросить чек
+  a <-- s: Выдать чек
+end
+@enduml
+
+@startuml UC_TaxDoc
+autoactivate on
+actor "Регистратура" as a
+participant "Система" as s
+participant "Кассовый аппарат" as kkt
+activate a
+a -> s: Запросить чек
+s -> kkt: Передать данные платежа
+s <-- kkt: Чек сформирован
+a <-- s: Распечатать чек
+@enduml
+
+@startuml UC_Consult
+autoactivate on
+actor "Врач" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Открыть запись пациента
+s -> db: Получить медкарту
+s <-- db: Данные
+a <-- s: Показать медкарту
+a -> s: Заполнить медкарту (include)
+a <-- s: Медкарта обновлена
+opt по необходимости (extend)
+  a -> s: Направление / больничный / госпитализация
+  a <-- s: Документ оформлен
+end
+a -> s: Завершить приём
+a <-- s: Приём закрыт
+@enduml
+
+@startuml UC_FillCard
+autoactivate on
+actor "Врач" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Ввести жалобы, диагноз, назначения
+s -> db: Сохранить записи в медкарту
+s <-- db: ОК
+a <-- s: Медкарта обновлена
+@enduml
+
+@startuml UC_Prescription
+autoactivate on
+actor "Врач" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Выбрать препарат и дозировку
+autoactivate off
+s -> s: Проверить совместимость
+autoactivate on
+s -> db: Сохранить рецепт
+s <-- db: ОК
+a <-- s: Рецепт оформлен
+@enduml
+
+@startuml UC_Referral
+autoactivate on
+actor "Врач" as a
+participant "Система" as s
+participant "Лаборатория" as lab
+activate a
+a -> s: Выбрать виды анализов
+s -> lab: Отправить направление
+s <-- lab: Подтверждение
+a <-- s: Направление оформлено
+@enduml
+
+@startuml UC_SickLeave
+autoactivate on
+actor "Врач" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Указать диагноз и срок
+s -> db: Сохранить больничный
+s <-- db: ОК
+a <-- s: Больничный оформлен
+@enduml
+
+@startuml UC_Hospitalize
+autoactivate on
+actor "Врач" as a
+participant "Система" as s
+participant "Стационар" as h
+activate a
+a -> s: Указать диагноз и причину
+s -> h: Отправить запрос на госпитализацию
+s <-- h: Место выделено
+a <-- s: Направление оформлено
+@enduml
+
+@startuml UC_ViewLabResults
+autoactivate on
+actor "Врач" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Выбрать пациента
+s -> db: Запросить результаты анализов
+s <-- db: Результаты
+a <-- s: Показать результаты
+@enduml
+
+@startuml UC_Schedule
+autoactivate on
+actor "Главный врач" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Открыть проект расписания
+s -> db: Получить расписание
+s <-- db: Данные
+a <-- s: Показать расписание
+a -> s: Утвердить расписание
+s -> db: Сохранить статус
+s <-- db: ОК
+a <-- s: Расписание утверждено
+@enduml
+
+@startuml UC_Procurement
+autoactivate on
+actor "Главный врач" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Открыть заявку на закупку
+s -> db: Получить заявку
+s <-- db: Список медикаментов
+a <-- s: Показать заявку
+a -> s: Утвердить закупку
+s -> db: Сохранить статус
+s <-- db: ОК
+a <-- s: Закупка утверждена
+@enduml
+
+@startuml UC_Audit
+autoactivate on
+actor "Главный врач" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Задать период и врача
+s -> db: Выбрать медкарты
+s <-- db: Медкарты
+a <-- s: Показать медкарты
+a -> s: Внести замечания
+s -> db: Сохранить результат аудита
+s <-- db: ОК
+a <-- s: Аудит завершён
+@enduml
+
+@startuml UC_Report
+autoactivate on
+actor "Главный врач" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Выбрать период отчёта
+s -> db: Собрать статистику
+s <-- db: Данные
+a <-- s: Показать отчёт
+opt отправить в Минздрав (extend)
+  a -> s: Запросить отправку отчёта
+  a <-- s: Отчёт отправлен
+end
+@enduml
+
+@startuml UC_ExportReport
+autoactivate on
+actor "Главный врач" as a
+participant "Система" as s
+participant "Минздрав" as m
+activate a
+a -> s: Отправить отчёт
+s -> m: Передать отчёт
+s <-- m: Подтверждение получения
+a <-- s: Отчёт отправлен
+@enduml
+
+@startuml UC_ReviewComplaint
+autoactivate on
+actor "Главный врач" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Открыть жалобу
+s -> db: Получить жалобу
+s <-- db: Данные жалобы
+a <-- s: Показать жалобу
+a -> s: Ввести решение
+s -> db: Сохранить решение
+s <-- db: ОК
+a <-- s: Жалоба рассмотрена
+@enduml

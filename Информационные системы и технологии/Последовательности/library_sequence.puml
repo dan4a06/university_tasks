@@ -1,0 +1,333 @@
+@startuml UC_Auth
+autoactivate on
+actor "Пользователь" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Ввести логин и пароль
+s -> db: Проверить учётные данные
+s <-- db: Результат
+autoactivate off
+alt успешно
+  a <-- s: Открыть кабинет
+else ошибка
+  a <-- s: Показать ошибку
+end
+deactivate s
+@enduml
+
+@startuml UC_Search
+autoactivate on
+actor "Читатель" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Ввести запрос
+s -> db: Проверить наличие книги (include)
+s <-- db: Книги и количество экземпляров
+a <-- s: Показать результаты
+@enduml
+
+@startuml UC_CheckDB
+autoactivate on
+participant "Система" as s
+database "БД" as db
+activate s
+s -> db: Найти книгу в каталоге
+s <-- db: Книга и количество экземпляров
+@enduml
+
+@startuml UC_History
+autoactivate on
+actor "Читатель" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Открыть историю чтения
+s -> db: Получить выдачи читателя
+s <-- db: Список книг
+a <-- s: Показать историю
+@enduml
+
+@startuml UC_Review
+autoactivate on
+actor "Читатель" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Ввести оценку и текст отзыва
+s -> db: Сохранить отзыв
+s <-- db: ОК
+a <-- s: Отзыв опубликован
+@enduml
+
+@startuml UC_Pay
+autoactivate on
+actor "Читатель" as a
+participant "Система" as s
+participant "Платёжный шлюз" as pg
+activate a
+a -> s: Открыть задолженность
+a <-- s: Показать сумму
+a -> s: Оплатить
+s -> pg: Запросить платёж
+s <-- pg: Результат
+a <-- s: Показать результат оплаты
+@enduml
+
+@startuml UC_AddFavorites
+autoactivate on
+actor "Читатель" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Нажать «В избранное»
+s -> db: Добавить книгу в избранное
+s <-- db: ОК
+a <-- s: Книга сохранена
+@enduml
+
+@startuml UC_Book
+autoactivate on
+actor "Читатель" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Выбрать книгу для брони
+a <-- s: Запросить авторизацию (include)
+a -> s: Ввести логин и пароль
+a <-- s: Авторизован
+s -> db: Создать бронь
+s <-- db: ОК
+a <-- s: Бронь оформлена
+@enduml
+
+@startuml UC_Renew
+autoactivate on
+actor "Читатель" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Запросить продление книги
+s -> db: Проверить, нет ли брони другим
+s <-- db: Результат
+autoactivate off
+alt можно продлить
+  s -> db: Обновить срок возврата
+  s <-- db: ОК
+  a <-- s: Новый срок возврата
+else нельзя
+  a <-- s: Отказ в продлении
+end
+deactivate s
+@enduml
+
+@startuml UC_Issue
+autoactivate on
+actor "Библиотекарь" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Предъявить читательский билет
+s -> db: Проверить читательский билет (include)
+s <-- db: Статус билета и долги
+a <-- s: Билет проверен
+a -> s: Выбрать книгу
+s -> db: Зафиксировать выдачу
+s <-- db: ОК
+a <-- s: Книга выдана
+@enduml
+
+@startuml UC_CheckCard
+autoactivate on
+participant "Система" as s
+database "БД" as db
+activate s
+s -> db: Найти билет
+s <-- db: Статус билета и долги
+@enduml
+
+@startuml UC_Return
+autoactivate on
+actor "Библиотекарь" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Отсканировать книгу
+s -> db: Найти выдачу
+s <-- db: Срок возврата
+a <-- s: Показать данные выдачи
+opt просрочка (extend)
+  a -> s: Начислить штраф
+  a <-- s: Штраф начислен
+end
+a -> s: Принять книгу
+s -> db: Закрыть выдачу
+s <-- db: ОК
+a <-- s: Возврат принят
+@enduml
+
+@startuml UC_Fine
+autoactivate on
+participant "Система" as s
+database "БД" as db
+activate s
+autoactivate off
+s -> s: Вычислить дни просрочки
+autoactivate on
+s -> db: Записать штраф читателю
+s <-- db: ОК
+@enduml
+
+@startuml UC_NewCard
+autoactivate on
+actor "Библиотекарь" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Ввести данные читателя
+s -> db: Создать читательский билет
+s <-- db: Номер билета
+a <-- s: Билет оформлен
+@enduml
+
+@startuml UC_Discard
+autoactivate on
+actor "Библиотекарь" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Выбрать книгу и указать причину списания
+s -> db: Списать экземпляр
+s <-- db: ОК
+a <-- s: Книга списана
+@enduml
+
+@startuml UC_AddBooks
+autoactivate on
+actor "Библиотекарь" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Ввести данные новых книг
+s -> db: Добавить книги в каталог
+s <-- db: ОК
+a <-- s: Каталог обновлён
+@enduml
+
+@startuml UC_SendReminders
+autoactivate on
+actor "Библиотекарь" as a
+participant "Система" as s
+database "БД" as db
+participant "Читатель" as r
+activate a
+a -> s: Запустить рассылку
+s -> db: Получить должников
+s <-- db: Список
+s -> r: Отправить напоминание
+s <-- r: Доставлено
+a <-- s: Рассылка выполнена
+@enduml
+
+@startuml UC_ConfirmSupply
+autoactivate on
+actor "Поставщик" as a
+participant "Система" as s
+activate a
+a -> s: Подтвердить заказ, указать состав и сроки
+a <-- s: Поставка зарегистрирована
+@enduml
+
+@startuml UC_SendInvoice
+autoactivate on
+actor "Поставщик" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Загрузить накладную
+s -> db: Сохранить накладную
+s <-- db: ОК
+a <-- s: Накладная принята
+@enduml
+
+@startuml UC_ManageUsers
+autoactivate on
+actor "Администратор" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Открыть список библиотекарей
+s -> db: Получить аккаунты
+s <-- db: Список
+a <-- s: Показать список
+a -> s: Создать / изменить / удалить аккаунт
+s -> db: Сохранить изменения
+s <-- db: ОК
+a <-- s: Готово
+@enduml
+
+@startuml UC_SetPermissions
+autoactivate on
+actor "Администратор" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Выбрать пользователя и задать права
+s -> db: Сохранить права
+s <-- db: ОК
+a <-- s: Права обновлены
+@enduml
+
+@startuml UC_Report
+autoactivate on
+actor "Администратор" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Выбрать период и тип отчёта
+s -> db: Собрать статистику
+s <-- db: Данные
+a <-- s: Показать отчёт
+@enduml
+
+@startuml UC_SendOrder
+autoactivate on
+actor "Администратор" as a
+participant "Система" as s
+participant "Поставщик" as p
+activate a
+a -> s: Выбрать заявку
+a <-- s: Показать сформированную заявку (include)
+a -> s: Подтвердить отправку
+s -> p: Передать заявку
+s <-- p: Заявка получена
+a <-- s: Заявка отправлена
+@enduml
+
+@startuml UC_Order
+autoactivate on
+participant "Система" as s
+database "БД" as db
+activate s
+s -> db: Получить дефицит и спрос
+s <-- db: Данные
+autoactivate off
+s -> s: Составить список книг к закупке
+@enduml
+
+@startuml UC_Postavka
+autoactivate on
+actor "Администратор" as a
+participant "Система" as s
+database "БД" as db
+activate a
+a -> s: Открыть поставку по накладной
+s -> db: Получить накладную
+s <-- db: Данные
+a <-- s: Показать накладную
+a -> s: Сверить и подтвердить приёмку
+s -> db: Добавить книги в каталог
+s <-- db: ОК
+a <-- s: Поставка принята
+@enduml
