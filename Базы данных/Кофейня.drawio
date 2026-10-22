@@ -1,6 +1,6 @@
 <mxfile host="Electron">
   <diagram name="Страница-1" id="MyReHdoztZdn_8lSb8dF">
-    <mxGraphModel dx="2475" dy="1457" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="813" dy="1263" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -86,7 +86,7 @@
             <mxRectangle height="30" width="30" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="VvdG-ckOjsvUGzjqEfO3-6" parent="VvdG-ckOjsvUGzjqEfO3-4" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontStyle=5;overflow=hidden;whiteSpace=wrap;html=1;" value="Производитель" vertex="1">
+        <mxCell id="VvdG-ckOjsvUGzjqEfO3-6" parent="VvdG-ckOjsvUGzjqEfO3-4" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;fontStyle=5;overflow=hidden;whiteSpace=wrap;html=1;" value="ПроизводительID" vertex="1">
           <mxGeometry height="30" width="149.99999999999977" x="30" as="geometry">
             <mxRectangle height="30" width="149.99999999999977" as="alternateBounds" />
           </mxGeometry>
@@ -403,7 +403,7 @@
             <mxRectangle height="30" width="30" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="jDXOp7MW2FV-yVdq2qZ3-22" parent="jDXOp7MW2FV-yVdq2qZ3-20" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" value="Степень обжарки" vertex="1">
+        <mxCell id="jDXOp7MW2FV-yVdq2qZ3-22" parent="jDXOp7MW2FV-yVdq2qZ3-20" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" value="Название" vertex="1">
           <mxGeometry height="30" width="149.99999999999977" x="30" as="geometry">
             <mxRectangle height="30" width="149.99999999999977" as="alternateBounds" />
           </mxGeometry>
@@ -738,7 +738,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="kh235o5SrDHtY-DizKqQ-72" parent="1" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fillColor=#a20025;strokeColor=#6F0000;fontColor=#ffffff;" value="Люди" vertex="1">
+        <mxCell id="kh235o5SrDHtY-DizKqQ-72" parent="1" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fillColor=#a20025;strokeColor=#6F0000;fontColor=#ffffff;" value="Клиенты" vertex="1">
           <mxGeometry height="90" width="180" x="60" y="40" as="geometry" />
         </mxCell>
         <mxCell id="kh235o5SrDHtY-DizKqQ-73" parent="kh235o5SrDHtY-DizKqQ-72" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=1;" value="" vertex="1">
