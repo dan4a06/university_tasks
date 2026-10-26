@@ -34,9 +34,7 @@ usecase "Выдать чек" as UC_TaxDoc
 usecase "Провести медицинский приём" as UC_Consult
 usecase "Заполнить медкарту" as UC_FillCard
 usecase "Выписать рецепт" as UC_Prescription
-usecase "Направить на анализы" as UC_Referral
 usecase "Оформить больничный" as UC_SickLeave
-usecase "Направить на госпитализацию" as UC_Hospitalize
 usecase "Просмотреть результаты анализов" as UC_ViewLabResults
 
 ' Управление и контроль (Главный врач)
@@ -66,6 +64,7 @@ Registrar -- UC_Payment
 Doctor -- UC_Consult
 Doctor -- UC_Prescription
 Doctor -- UC_ViewLabResults
+Doctor -- UC_SickLeave
 
 ' --- СВЯЗИ ГЛАВНОГО ВРАЧА ---
 HeadDoctor -- UC_Schedule
@@ -80,9 +79,6 @@ UC_Consult ..> UC_FillCard : <<include>>
 
 ' --- СВЯЗИ EXTEND ---
 UC_Payment <.. UC_TaxDoc : <<extend>>
-UC_Consult <.. UC_Referral : <<extend>>
-UC_Consult <.. UC_SickLeave : <<extend>>
-UC_Consult <.. UC_Hospitalize : <<extend>>
 UC_Report <.. UC_ExportReport : <<extend>>
 
 @enduml
