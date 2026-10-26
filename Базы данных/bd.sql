@@ -7,12 +7,12 @@ CREATE TABLE люди (
 
 CREATE TABLE город (
 город_id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-город varchar(20)
+город varchar(20) NOT NULL UNIQUE
 );
 
 CREATE TABLE топинг (
 топинг_id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-топинг varchar(50) NOT NULL,
+топинг varchar(50) NOT NULL UNIQUE,
 цена_за_единицу numeric(5, 2) NOT NULL CHECK (цена_за_единицу >= 0)
 );
 
@@ -26,22 +26,22 @@ CREATE TABLE напиток (
 
 CREATE TABLE обжарка (
 обжарка_id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-название varchar(30) NOT NULL
+название varchar(30) NOT NULL UNIQUE
 );
 
 CREATE TABLE место_сбора (
 место_сбора_id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-название varchar(30) NOT NULL
+название varchar(30) NOT NULL UNIQUE
 );
 
 CREATE TABLE производитель (
 производитель_id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-название VARCHAR(150) NOT NULL
+название VARCHAR(150) NOT NULL UNIQUE
 );
 
 CREATE TABLE молоко (
 молоко_id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-молоко varchar(100) NOT NULL,
+молоко varchar(100) NOT NULL UNIQUE,
 цена numeric(5, 2) NOT NULL CHECK (цена >= 0)
 );
 
@@ -60,7 +60,7 @@ CREATE TABLE клиенты (
 CREATE TABLE бариста (
 бариста_id integer PRIMARY KEY REFERENCES люди (люди_id),
 кофейня_id integer NOT NULL REFERENCES кофейня (кофейня_id),
-дата_трудоустройства date NOT NULL
+дата_трудоустройства date NOT NULL UNIQUE 
 );
 
 CREATE TABLE зерно (
@@ -69,10 +69,9 @@ CREATE TABLE зерно (
 обжарка_id integer NOT NULL REFERENCES обжарка (обжарка_id),
 место_сбора_id integer NOT NULL REFERENCES место_сбора (место_сбора_id),
 название varchar(150) NOT NULL,
-дата_сбора date,
-дата_обжарки date,
-CHECK (дата_обжарки IS NULL OR дата_сбора IS NULL OR дата_обжарки >= дата_сбора)
-);
+дата_сбора date NOT NULL,
+дата_обжарки date NOT NULL CHECK (дата_обжарки >= дата_сбора)
+); 
 
 -- -------------------
 
