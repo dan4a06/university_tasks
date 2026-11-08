@@ -1,0 +1,1 @@
+SELECT FROM afanasiev342.part;
