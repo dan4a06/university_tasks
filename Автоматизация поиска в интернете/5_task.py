@@ -1,8 +1,6 @@
 import math
-import os
 import re
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Окончания, которые отрезаем (самые длинные проверяются первыми)
 ENDINGS = sorted([
@@ -34,7 +32,7 @@ index = {}
 lengths = {}  # сколько слов в каждом файле
 for i in range(1, 11):
     name = f'file{i}.txt'
-    with open(os.path.join(BASE_DIR, name), 'r', encoding='utf-8') as f:
+    with open(name, 'r', encoding='utf-8') as f:
         text = f.read()
     print(f'{name}: {text.strip()}')
     stems = get_stems(text)

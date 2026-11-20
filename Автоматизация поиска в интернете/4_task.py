@@ -1,7 +1,4 @@
-import os
 import re
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Окончания, которые отрезаем (самые длинные проверяются первыми)
 ENDINGS = sorted([
@@ -32,7 +29,7 @@ def get_stems(text):
 index = {}
 for i in range(1, 11):
     name = f'file{i}.txt'
-    with open(os.path.join(BASE_DIR, name), 'r', encoding='utf-8') as f:
+    with open(name, 'r', encoding='utf-8') as f:
         text = f.read()
     print(f'{name}: {text.strip()}')
     for pos, s in enumerate(get_stems(text), start=1):
